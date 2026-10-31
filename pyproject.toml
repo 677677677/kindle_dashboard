@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kindle-time-mirror"
+version = "0.1.0"
+description = "本地优先的个人时间 Dashboard 聚合核心"
+requires-python = ">=3.12"
+dependencies = [
+    "icalendar>=6,<8",
+    "msal-extensions>=1.2,<2",
+    "recurring-ical-events>=3,<4",
+    "tzdata>=2025.2",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

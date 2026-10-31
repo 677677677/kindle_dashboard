@@ -1,0 +1,44 @@
+{
+  "timezone": "Asia/Shanghai",
+  "gadgetbridge": {"enabled": false, "databasePath": null},
+  "remainingTime": {
+    "reservePlan": [
+      {"label": "去程通勤", "minutes": 30, "assumedCompletedBy": "10:00"},
+      {"label": "午餐", "minutes": 60, "assumedCompletedBy": "14:00"},
+      {"label": "返程通勤", "minutes": 30, "assumedCompletedBy": "20:00"},
+      {"label": "晚餐", "minutes": 90, "assumedCompletedBy": "21:00"},
+      {"label": "睡前准备", "minutes": 90, "assumedCompletedBy": "00:00"}
+    ]
+  },
+  "activitywatch": {
+    "enabled": true,
+    "baseUrl": "http://127.0.0.1:5600",
+    "databasePath": null
+  },
+  "classification": {
+    "sleepMinutes": 0,
+    "gameApps": ["tlou-ii.exe"],
+    "courseKeywords": ["课程", "上课", "lecture", "tutorial", "sectional teaching"]
+  },
+  "android": {
+    "enabled": true,
+    "syncEnabled": true,
+    "syncDirectory": null,
+    "syncExecutable": null,
+    "exportPath": null,
+    "staleAfterMinutes": 1440,
+    "ignorePackages": []
+  },
+  "outlook": {
+    "enabled": false,
+    "syncAfter": "07:00"
+  },
+  "kindle": {
+    "hosts": ["kindle.local"],
+    "port": 2222,
+    "user": "root",
+    "privateKey": "%USERPROFILE%/.ssh/kindle_dashboard_rsa",
+    "statisticsDatabase": "/mnt/us/koreader/settings/statistics.sqlite3"
+  }
+}
+
