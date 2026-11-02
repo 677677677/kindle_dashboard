@@ -25,8 +25,26 @@ if (-not (Get-Process Rainmeter -ErrorAction SilentlyContinue)) {
     Start-Process -FilePath $RainmeterPath -WindowStyle Hidden
     Start-Sleep -Seconds 2
 }
-foreach ($name in @('Remaining', 'Overview', 'Allocation', 'Axis')) {
-    & $RainmeterPath '!ActivateConfig' "TimeMirror\$name" "$name.ini"
-    & $RainmeterPath '!Refresh' "TimeMirror\$name"
+$rainmeterProcess = @(Get-Process Rainmeter -ErrorAction SilentlyContinue | Where-Object { $_.Path -eq $RainmeterPath })
+if ($rainmeterProcess.Count -ne 1) {
+    Add-Content -LiteralPath $logPath -Encoding UTF8 -Value "$(Get-Date -Format s) 无法确认唯一 Rainmeter 进程，未发出启动命令。"
+    exit 1
 }
-Add-Content -LiteralPath $logPath -Encoding UTF8 -Value "$(Get-Date -Format s) 页面已就绪，四个桌面组件已恢复。"
+$rainmeterId = $rainmeterProcess[0].Id
+foreach ($name in @('Remaining', 'Overview', 'Allocation', 'Axis')) {
+    if (-not (Get-Process -Id $rainmeterId -ErrorAction SilentlyContinue)) {
+        Add-Content -LiteralPath $logPath -Encoding UTF8 -Value "$(Get-Date -Format s) Rainmeter 在组件启动期间退出，等待任务重试。"
+        exit 1
+    }
+    & $RainmeterPath '!ActivateConfig' "TimeMirror\$name" "$name.ini"
+    & $RainmeterPath '!CommandMeasure' 'WebView' 'WebView Start' "TimeMirror\$name"
+    Start-Sleep -Milliseconds 300
+}
+foreach ($attempt in 1..10) {
+    Start-Sleep -Seconds 1
+    if (-not (Get-Process -Id $rainmeterId -ErrorAction SilentlyContinue)) {
+        Add-Content -LiteralPath $logPath -Encoding UTF8 -Value "$(Get-Date -Format s) Rainmeter 未通过启动后进程持续性检查。"
+        exit 1
+    }
+}
+Add-Content -LiteralPath $logPath -Encoding UTF8 -Value "$(Get-Date -Format s) 页面已就绪，四块已请求幂等启动；Rainmeter 进程通过持续十秒检查。"

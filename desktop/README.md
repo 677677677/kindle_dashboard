@@ -19,7 +19,7 @@
 
 Rainmeter 主配置中，四块使用 `AlwaysOnTop=-2`（On desktop）、`SavePosition=1`、`Draggable=0` 和 `ClickThrough=1`；插件 measure 另设 `Clickthrough=1`。普通窗口应覆盖组件；桌面应显示组件在 Wallpaper Engine 上方。实际层级、透明和系统缩放仍必须本机截图确认。
 
-登录时保留 Rainmeter 的启动文件夹快捷方式；安装时仅在缺失时创建。另注册正式 `TimeMirror-Desktop-Widgets` 登录任务，隐藏等待 `/widgets/remaining` 返回成功后，重新激活四块皮肤，避免先启动 Rainmeter 时 WebView 导航失败。等待上限 15 分钟，失败后由任务计划程序每 2 分钟重试、最多 3 次；任务允许电池供电。后台 Dashboard 继续由现有正式登录任务运行。页面加载后按 30 秒轮询自动恢复快照接口，不需要手动刷新。
+登录时保留 Rainmeter 的启动文件夹快捷方式；安装时仅在缺失时创建。四块插件 `AutoStart=0`，另注册正式 `TimeMirror-Desktop-Widgets` 登录任务，隐藏等待 `/widgets/remaining` 返回成功后，依次激活固定同名皮肤并发出 `WebView Start`，每块间隔 300 毫秒。重复启动由插件的已启动／正在初始化保护处理，绝不刷新或销毁正在初始化的 WebView。任务在启动后还检查同一 Rainmeter 进程持续十秒，才记录启动检查通过；这不代替页面与数据的视觉验收。等待上限 15 分钟，失败后由任务计划程序每 2 分钟重试、最多 3 次；任务允许电池供电。后台 Dashboard 继续由现有正式登录任务运行。页面加载后按 30 秒轮询自动恢复快照接口，不需要手动刷新。
 
 - `restart-widgets.ps1`：请求登录恢复任务重新等待并激活这四块，不停采集、不重启 Kindle 页面。
 - `restore-backup.ps1 -BackupPath <安装时输出的备份目录>`：恢复安装前的 Rainmeter 配置与已有文件；新增文件保留但不激活。
