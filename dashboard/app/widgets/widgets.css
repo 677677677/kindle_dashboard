@@ -1,0 +1,94 @@
+/* ==================== 独立桌面展示层 ==================== */
+html:has(.desktop-widget), body:has(.desktop-widget) {
+  background: transparent !important; min-height: 0; width: 100%; height: 100%; overflow: hidden;
+}
+body:has(.desktop-widget) { display: block; }
+.desktop-widget {
+  --ink: #f1e9d5; --muted: #c0c2ac; --line: #b6bf8e36; --paper: #172319;
+  position: relative; width: 100vw; height: 100vh; min-height: 0; overflow: hidden;
+  padding: 12px 15px 31px; border: 1px solid #c5c69b2b; border-radius: 12px;
+  background: linear-gradient(140deg, #17261ecc, #182119b8); color: var(--ink);
+  font-family: 'Segoe UI Variable', 'Segoe UI', 'Microsoft YaHei UI', sans-serif;
+  font-size: 11px; line-height: 1.4; font-weight: 300; font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 3px #0007;
+}
+.desktop-widget h1, .desktop-widget strong, .desktop-widget h2, .desktop-widget b { font-weight: 400; }
+.widget-title { margin: 0 0 5px; font-size: 13px; letter-spacing: .5px; line-height: 1.4; white-space: nowrap; }
+.widget-title > span { float: right; color: var(--muted); font-size: 10px; }
+.widget-eyebrow { font-size: 10px; color: #d5c59d; letter-spacing: 1.2px; }
+.widget-muted { color: var(--muted); font-size: 10px; margin-top: 4px; }
+.widget-empty { display: block; margin: 14px 0 5px; color: #e6d4aa; font-size: 14px; }
+.desktop-widget .remaining-value { display: block; color: #f0dba8; font-size: 30px; line-height: 1.1; letter-spacing: .5px; }
+.desktop-widget .remaining-value small { font-size: 12px; margin: 0 7px 0 3px; }
+.widget-progress { height: 3px; border-radius: 2px; margin: 8px 0 4px; background: #9ca98a33; overflow: hidden; }
+.widget-progress i { display: block; height: 100%; background: linear-gradient(90deg, #879e75, #d4bd86); }
+.widget-status { position: absolute; bottom: 8px; left: 15px; right: 15px; display: flex; flex-direction: column; font-size: 9px; color: #b7bea8; line-height: 1.3; }
+.widget-status > span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.widget-status--partial > span:last-child { color: #d2bd8e; }
+.widget-sleep-value { color: #e8d2a1; font-size: 24px; margin-top: 4px; line-height: 1.2; }
+.desktop-widget .sleep-detail { margin-top: 2px; padding-top: 0; border: 0; display: block; }
+.desktop-widget .sleep-detail strong { display: none; }
+.desktop-widget .sleep-detail > span { color: var(--muted); font-size: 10px; }
+.widget-totals { display: flex; gap: 18px; margin-top: 8px; padding-top: 7px; border-top: 1px solid var(--line); color: var(--muted); }
+.widget-totals b { color: var(--ink); margin-left: 3px; }
+
+/* ==================== 共用图表的自然色皮肤 ==================== */
+.desktop-widget .allocation-body { display: block; min-height: 0; margin-top: 0; }
+.desktop-widget .ring-wrap { width: 106px; height: 106px; margin: 3px auto 7px; }
+.desktop-widget .ring-center > span { color: var(--muted); font-size: 8px; }
+.desktop-widget .ring-center > strong { margin: 1px 0; font-size: 16px; }
+.desktop-widget .allocation-ring path[fill='#181818'] { fill: #82958b; }
+.desktop-widget .allocation-ring path[fill='#777'] { fill: #a6b47c; }
+.desktop-widget .allocation-ring path[fill='url(#allocation-entertainment)'] { fill: #c5a16e; }
+.desktop-widget .allocation-ring path[fill='url(#allocation-reading)'] { fill: #cccd9b; }
+.desktop-widget .allocation-ring path[fill='#c4c4c4'] { fill: #739775; }
+.desktop-widget .allocation-ring path[fill='url(#allocation-other)'] { fill: #7b8074; }
+.desktop-widget .allocation-ring path[fill='#ededed'] { fill: #d9d8bb28; }
+.desktop-widget .entertainment-ring-link { display: none; }
+.desktop-widget .allocation-legend { margin: 0; }
+.desktop-widget .allocation-legend-row { min-height: 16px; font-size: 10px; }
+.desktop-widget .allocation-legend-row + .allocation-legend-row { margin-top: 0; }
+.desktop-widget .allocation-swatch { width: 6px; height: 6px; flex-basis: 6px; border-radius: 50%; }
+.desktop-widget .allocation-swatch--sleep { background: #82958b; }
+.desktop-widget .allocation-swatch--study { background: #a6b47c; }
+.desktop-widget .allocation-swatch--entertainment { background: #c5a16e; }
+.desktop-widget .allocation-swatch--reading { background: #cccd9b; }
+.desktop-widget .allocation-swatch--daily { background: #739775; }
+.desktop-widget .allocation-swatch--other { background: #7b8074; }
+.desktop-widget .allocation-swatch--future { background: #d9d8bb50; }
+.desktop-widget .allocation-duration { min-width: 34px; }
+.desktop-widget .allocation-percent { min-width: 36px; color: var(--muted); }
+.desktop-widget .entertainment-breakdown { display: block; margin-top: 6px; padding: 5px 0 0; border-top: 1px solid var(--line); font-size: 10px; }
+.desktop-widget .entertainment-branch { display: none; }
+.desktop-widget .entertainment-breakdown > strong { display: block; margin-bottom: 2px; font-size: 10px; color: #dac397; }
+.desktop-widget .entertainment-breakdown > div { grid-template-columns: 1fr; gap: 1px; }
+.desktop-widget .entertainment-breakdown--empty { padding-top: 7px; color: var(--muted); }
+
+/* ==================== 横向全天轴 ==================== */
+.desktop-widget--axis { padding: 6px 12px 17px; }
+.desktop-widget--axis .widget-title { font-size: 10px; line-height: 11px; margin-bottom: 0; }
+.desktop-widget--axis .widget-status { flex-direction: row; gap: 10px; bottom: 4px; font-size: 8px; line-height: 1.2; }
+.desktop-widget--axis .widget-status > span:first-child { flex: 0 0 auto; }
+.desktop-widget--axis .axis-ticks { height: 9px; line-height: 9px; margin: 0 0 3px; font-size: 8px; color: var(--muted); }
+.desktop-widget--axis .axis-ticks span:nth-child(even) { display: block; }
+.desktop-widget.desktop-widget--axis .day-bar { height: 11px; }
+.desktop-widget.desktop-widget--axis .axis-app { height: 11px; line-height: 11px; font-size: 8px; }
+.desktop-widget.desktop-widget--axis .axis-key { font-size: 8px; line-height: 10px; margin-top: 1px; }
+.desktop-widget.desktop-widget--axis .axis-calendar-summary { position: absolute; top: 6px; left: 150px; right: 150px; margin: 0; font-size: 8px; line-height: 11px; }
+.desktop-widget--axis .axis-now > span { display: none; }
+.desktop-widget .day-bar { height: 16px; background: #9aa48a22; border-radius: 3px; }
+.desktop-widget .axis-app { height: 16px; line-height: 16px; font-size: 9px; color: #162017; border-right-color: #192a1877; }
+.desktop-widget .axis-app-tone-0 { background: #b7c48e; }
+.desktop-widget .axis-app-tone-1 { background: #cbb482; }
+.desktop-widget .axis-app-tone-2 { background: #87a390; }
+.desktop-widget .axis-app-tone-3 { background: #c0c399; }
+.desktop-widget .axis-app-tone-4 { background: #799572; }
+.desktop-widget .axis-app-tone-5 { background: #a89a7c; }
+.desktop-widget .axis-segment--reserve { background: #bcc0a044; }
+.desktop-widget .axis-segment--calendar { background: repeating-linear-gradient(135deg, #cfba8466 0, #cfba8466 2px, #cfba8422 2px, #cfba8422 7px); }
+.desktop-widget .axis-now { border-left-color: #f2dfb0; top: -1px; bottom: -1px; }
+.desktop-widget .axis-now > span { top: -13px; left: -11px; font-size: 8px; color: #f2dfb0; background: #223025; border-radius: 2px; }
+.desktop-widget .axis-key { margin-top: 3px; gap: 1px 11px; font-size: 9px; color: var(--muted); flex-wrap: nowrap; overflow: hidden; }
+.desktop-widget .axis-app-key { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.desktop-widget .axis-key i { width: 7px; height: 6px; }
+.desktop-widget .axis-calendar-summary { margin-top: 1px; font-size: 9px; color: var(--muted); text-align: left; }

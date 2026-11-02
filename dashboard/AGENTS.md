@@ -38,3 +38,25 @@ dashboard/
 - 2026-10-26：在全天共用横轴中增加预计预留和两款手机 App 的连续大块使用记录；展示无需客户端脚本。
 - 2026-10-26：接入横版全天分配与七日手机／阅读趋势，保留未知与缺失状态；图表使用服务端SVG输出。
 
+
+## 独立桌面组件
+
+```text
+dashboard/
+├── app/api/widget-snapshot/route.ts # 固定本机端点的只读、禁缓存代理
+├── app/widgets/
+│   ├── [panel]/page.tsx             # 四块独立桌面页面的服务端首屏
+│   ├── widget-panel.tsx             # 30秒更新、缓存和来源状态
+│   └── widgets.css                  # 桌面专用透明自然色样式
+└── lib/
+    ├── dashboard-ui.tsx             # Kindle和桌面共用时间值、单轴、环图
+    └── load-widget-snapshot.ts      # 四秒超时的本机快照加载
+```
+
+依赖为 `本机 snapshot-v1 → 只读加载/代理 → widgets → desktop skins`，不写数据、不重算时间、不新增采集。四页为 `remaining`、`overview`、`allocation` 和 `axis`；尺寸和位置由桌面承载层配置，底部轴基准980×70。
+
+根布局不输出meta定时刷新；仅Kindle首页正常和不可用分支输出300秒刷新，由React提升到head，保留无脚本运行。桌面服务端完全不输出刷新标签，客户端每30秒只更新数据。所有桌面页显示数据生成时间；离线保留最后快照并标缓存，来源异常、12分钟过期和跨日旧记录不得被HTTP成功掩盖。透明样式限定在 `.desktop-widget` 容器，不改变Kindle界面；公开首页原有七日趋势保持不变。
+
+- 2026-11-02：新增桌面只读视图、共享展示模块和快照代理，不包含个人部署数据。
+
+`dashboard/.openai/hosting.json` 是现有 `vite.config.ts` 所需的可公开构建占位配置，仅含 `d1: null`、`r2: null`，不含绑定、账户信息或密钥。不得将实际部署绑定或其他本机 `.openai` 文件混入该源包。
