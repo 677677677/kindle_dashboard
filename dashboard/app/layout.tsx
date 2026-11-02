@@ -9,11 +9,8 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN">
-      <head>
-        <meta httpEquiv="refresh" content="300" />
-      </head>
+      <head />
       <body>{children}</body>
     </html>
   );
 }
-
